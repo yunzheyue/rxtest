@@ -9,6 +9,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.*;
 import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 //        foo4();
 //        foo5();
 //        foo6();
-        foo7();
+//        foo7();
 //        foo8();
 //        foo9();
 //        foo10();
@@ -49,8 +51,62 @@ public class MainActivity extends AppCompatActivity {
 //        foo24();
 //        foo25();
 //        foo26();
+        foo27();
 
 
+    }
+
+    private void foo27() {
+/**  Flowable就是为了解决异步线程中，生产者发送数据过多，而消费者不能及时消费，最终产生oom的问题
+ * 
+ *   https://blog.csdn.net/qq_26723241/article/details/79021553
+ *   https://blog.csdn.net/yurhzzu/article/details/80143730
+ */
+
+        Flowable.just(1,2,3).onBackpressureBuffer().subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                Log.e("TAG", "onBackpressureBuffer=="+integer);
+            }
+        });
+
+        Flowable.create(new FlowableOnSubscribe<String>() {
+            @Override
+            public void subscribe(FlowableEmitter<String> e) throws Exception {
+                for (int i = 0; i < 10; i++) {//十个客官排队
+                    e.onNext(i + "");//一个个跃跃欲试啊
+                }
+                e.onComplete();//完成
+            }
+        }, BackpressureStrategy.BUFFER)
+                .subscribeOn(Schedulers.io())//上游io线程
+                .observeOn(AndroidSchedulers.mainThread())//下游UI线程
+                .subscribe(new Subscriber<String>() {
+
+                    Subscription mSub;
+
+                    @Override
+                    public void onSubscribe(Subscription subscription) {
+                        mSub = subscription;
+                        mSub.request(1);//来一个吧~
+                    }
+
+                    @Override
+                    public void onNext(String str) {
+                        Log.e("flowable", "onNext ====>>  " + str);//来喽~~
+                        mSub.request(1);//那下一位客官里面请~~
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.e("flowable", "onError ====>>  " + t.getMessage().toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("flowable", "onComplete");
+                    }
+                });
     }
 
     private void foo26() {
