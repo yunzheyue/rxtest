@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        foo1();
 //        foo2();
-        foo3();
+//        foo3();
 //        foo4();
 //        foo5();
 //        foo6();
-//        foo7();
+        foo7();
 //        foo8();
 //        foo9();
 //        foo10();
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
 //        toMap:  默认转化为HashMap,然后发射这个map,也可以提供生成Map的key函数
         TestBean testBean1 = new TestBean("啦啦啦", "A");
         TestBean testBean2 = new TestBean("啦啦啦1", "SS");
@@ -104,9 +103,7 @@ public class MainActivity extends AppCompatActivity {
 /**条件操作符
  * amb：会优先发送排名最前的数据。
  * defaultIfEmpty: 表示如果没有数据，就会发送默认的数据
- *
  */
-
         Observable.fromIterable(new ArrayList<Integer>())
                 .defaultIfEmpty(1)
                 .subscribe(new Consumer<Integer>() {
@@ -154,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void foo23() {
 //        retry：表示出现错误后，再重试的次数
-
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -180,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
  *  onErrorResumeNext:
  *  onExceptionResumeNext:
  */
-
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -267,14 +262,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "==" + integer);
             }
         });
-
-
     }
 
     private void foo21() {
         /** subscribeOn操作符用于指定的Observable自身在哪个线程上运行，比如耗时操作可以在这个线程中运行
-         observerOn:用来指定Observer所运行的线程，也就是在哪个线程中使用。
-         timeout：表示的是在超时后就会切换到你指定的一个备用Observable进行处理
+         *  observerOn:用来指定Observer所运行的线程，也就是在哪个线程中使用。
+         *  timeout：表示的是在超时后就会切换到你指定的一个备用Observable进行处理
          */
         /**
          *Schedulers.immediate()：直接在当前线程执行
@@ -305,8 +298,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void foo20() {
-//    delay:延时操作
-/**  Do系列操作符
+/**
+ * delay:延时操作
+ *
+ * Do系列操作符
  *   doOnEach:当Observable每发射一项就会调用一次，包裹onNext onError  onCompleted
  *   doOnNext:当onNext的时候会调用
  *   doOnSubscribe:当观察者订阅Observable时就会被调用
@@ -385,9 +380,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void foo19() {
-
 //        使用merge将多个Observable进行合并操作
-
         Observable<Integer> just1 = Observable.just(1, 2, 3);
         Observable<Integer> just2 = Observable.just(4, 5, 6);
 
@@ -432,7 +425,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "combineLatest==" + o);
             }
         });
-
     }
 
     private void foo18() {
@@ -449,9 +441,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void foo17() {
-
-//        throttleWithTimeout：是通过时间进行限流，在Observable每次发射出来的一个数据后就开始计时，如果在设定好的时间内有新的数据发射出来
-//        那么就会将当前的数据清空，并且重新计时。
+//      throttleWithTimeout：是通过时间进行限流，在Observable每次发射出来的一个数据后就开始计时，
+//      如果在设定好的时间内有新的数据发射出来, 那么就会将当前的数据清空，并且重新计时,否则就处理数据。
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -459,9 +450,7 @@ public class MainActivity extends AppCompatActivity {
                     emitter.onNext(i);
                     Thread.sleep(100);
                 }
-
                 emitter.onComplete();
-
             }
         }).throttleWithTimeout(101, TimeUnit.MILLISECONDS).subscribe(new Consumer<Integer>() {
             @Override
@@ -470,14 +459,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "throttleFirst==" + integer);
             }
         });
-
     }
 
 
     private void foo16() {
-//  ignoreElements不能使用？
-//
-//throttleFirst:表示会定期发射这个时间段中的第一个数据   throttle表示的是限流的意思
+//    throttleFirst:表示会定期发射这个时间段中的第一个数据   throttle表示的是限流的意思
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -489,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
                 emitter.onComplete();
 
             }
+//            会拿到200毫秒内的发射的数据的第一个
         }).throttleFirst(200, TimeUnit.MILLISECONDS).subscribe(new Consumer<Integer>() {
             @Override
             public void accept(Integer integer) throws Exception {
@@ -496,12 +483,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "throttleFirst==" + integer);
             }
         });
-
     }
 
     private void foo15() {
-//        skip：过滤到前n项, take:只取前n项。
-//        skipLast:         taleLast
+//        skip：跳过前n项, take:只取前n项。
+//        skipLast:         takeLast
         Observable.just(1, 3, 4, 6, 5, 6).skipLast(2).subscribe(new Consumer<Integer>() {
             @Override
             public void accept(Integer integer) throws Exception {
@@ -548,16 +534,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void foo11() {
-
         TestBean testBean1 = new TestBean("啦啦啦", "A");
         TestBean testBean2 = new TestBean("啦啦啦1", "SS");
         TestBean testBean3 = new TestBean("啦啦啦2", "S");
         TestBean testBean4 = new TestBean("啦啦啦3", "A");
         TestBean testBean5 = new TestBean("啦啦啦4", "S");
         TestBean testBean6 = new TestBean("啦啦啦5", "SS");
-
 //        使用groupBy能对集合中的数据进行分组，返回的是分组完毕的Observable
-        Observable<GroupedObservable<String, TestBean>> groupedObservableObservable = Observable.just(testBean1, testBean2, testBean3, testBean4, testBean5, testBean6)
+        Observable<GroupedObservable<String, TestBean>> groupedObservableObservable = Observable.just(testBean1,
+                testBean2, testBean3, testBean4, testBean5, testBean6)
                 .groupBy(new Function<TestBean, String>() {
                     @Override
                     public String apply(TestBean testBean) throws Exception {
@@ -572,12 +557,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "testBean==" + testBean);
             }
         });
-
-
     }
 
     private void foo10() {
-//    使用buffer操作符可以控制每次发射的个数
+//    使用buffer操作符可以控制每次发射的个数，下面就是3个元素放在一起发射
         Observable.just(1, 2, 3, 4, 5, 6).buffer(3).subscribe(new Consumer<List<Integer>>() {
             @Override
             public void accept(List<Integer> integers) throws Exception {
@@ -586,17 +569,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private void foo9() {
-
 //        使用flatMapIterable可以将数据包裹成Iterable,也就是list。
         Observable.just(1, 2, 3).flatMapIterable(new Function<Integer, Iterable<?>>() {
             @Override
             public Iterable<?> apply(Integer integer) throws Exception {
-
                 ArrayList<Integer> integers = new ArrayList<>();
                 integers.add(4);
                 integers.add(6);
@@ -612,8 +591,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void foo8() {
-
-//        使用concatMap功能类似于flatMap，并且解决了数据交叉的问题
+//      使用concatMap功能类似于flatMap，并且解决了数据交叉的问题
         final ArrayList<String> strings = new ArrayList<>();
         strings.add("eee");
         strings.add("eee2");
@@ -631,20 +609,35 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("TAG", "s==" + s);
                     }
                 });
-
-
     }
 
     private void foo7() {
-//        flatMap:将Observable发射的数据集合转换为Oservable集合，然后将这些数据平坦的放在一个单独的Observable中。
-//        Observable实现了ObservableSource接口,并且使用cast()方法将返回的Object转化为String.
-//        flatMap有可能会导致交错的发送事件，导致结果顺序不一致
+//    1、返回值上面：
+//    map变换后可以返回任意值，而flatMap则只能返回ObservableSource类型
+//    2、变换后的输出：
+//    map只能进行一对一的变换，而flatMap则可以进行一对一，一对多，多对多的变换，具体的变换规则根据我们设置的变换函数mapper来定
+//    因此使用flatMap比map更加的灵活
+
+//    Observable实现了ObservableSource接口,并且使用cast()方法将返回的Object转化为String.
+//    flatMap有可能会导致交错的发送事件，导致结果顺序不一致
+
+        Observable.just(1, 2, 3).flatMap(new Function<Integer, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(Integer integer) throws Exception {
+                return Observable.just(integer, integer + 1);
+            }
+        }).cast(Integer.class).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                Log.e("TAG", "integer==" + integer);
+            }
+        });
+
         final ArrayList<String> strings = new ArrayList<>();
         strings.add("eee");
         strings.add("eee2");
         strings.add("eee3");
-//        使用FromIterable，可以将集合数据传递进去
-
+//       使用FromIterable，可以将集合数据传递进去
         Observable.fromIterable(strings).flatMap(new Function<String, ObservableSource<?>>() {
             @Override
             public ObservableSource<?> apply(String s) throws Exception {
@@ -698,7 +691,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void foo4() {
 //        range  取代for循环
-
         final ArrayList<String> strings = new ArrayList<>();
         strings.add("eee");
         strings.add("eee2");
@@ -715,18 +707,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void foo3() {
-//不能用了
-//        Action action = new Action() {
-//            @Override
-//            public void run() throws Exception {
-//            }
-//        };
-//
-//        Observable<String> observable = Observable.just("啦啦", "www", "ev");
-//        observable.subscribe(action);   //不能用了
-
-
-//       设置定时器  使用Schedulers.shutdown();方法进行取消定时器
+//       设置定时器  使用Schedulers.shutdown();方法进行取消定时器。在interval中也可以指定线程
+//        但是就不能使用Schedulers.newThread().shutdown()等方法取消了
         final Observable<Long> observable = Observable.interval(2, TimeUnit.SECONDS);
         observable.subscribe(new Consumer<Long>() {
             @Override
@@ -748,12 +730,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void foo2() {
-
-//        just:将事件依次执行
+//        just:将事件依次执行，然后依次在Consumer中获取
         Observable<String> observable = Observable.just("啦啦", "www", "ev");
         observable.subscribe(new Consumer<String>() {
             @Override
@@ -761,7 +741,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "foo2--just---" + s);
             }
         });
-
 
 //       fromArray:将数组中的数据依次执行
         String[] strings = {"ee", "xxx"};
@@ -771,7 +750,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "foo2--fromArray---" + s);
             }
         });
-
 
     }
 
@@ -802,7 +780,6 @@ public class MainActivity extends AppCompatActivity {
 
         //也是观察者，是Observer的简化形式
         Consumer<String> consumer = new Consumer<String>() {
-
             @Override
             public void accept(String s) throws Exception {
                 Log.e("TAG", "Consumer===" + s);
@@ -813,6 +790,7 @@ public class MainActivity extends AppCompatActivity {
         Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+//                在这里可以做相应的逻辑的处理，将结果通过emitter.onNext()发射出去，可以指定在这里运行的线程
                 emitter.onNext("啦啦");
                 emitter.onNext("哇哇");
                 emitter.onComplete();
