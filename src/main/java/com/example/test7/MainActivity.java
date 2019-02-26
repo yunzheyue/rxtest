@@ -798,6 +798,7 @@ public class MainActivity extends AppCompatActivity {
         }).subscribe(observer);
 
 
+
         Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
