@@ -58,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void foo27() {
 /**  Flowable就是为了解决异步线程中，生产者发送数据过多，而消费者不能及时消费，最终产生oom的问题
- * 
+ *   注意在这里，Flowable和Subscriber配合使用
+ *              而Observable要和Observer配合使用。  但是都能用Consumer的这样的形式进行简化。
+ *
  *   https://blog.csdn.net/qq_26723241/article/details/79021553
  *   https://blog.csdn.net/yurhzzu/article/details/80143730
+ *
  */
 
         Flowable.just(1,2,3).onBackpressureBuffer().subscribe(new Consumer<Integer>() {
